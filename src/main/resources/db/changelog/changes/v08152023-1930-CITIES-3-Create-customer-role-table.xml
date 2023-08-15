@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <preConditions>
+        <or>
+            <dbms type="postgresql"/>
+            <dbms type="h2"/>
+        </or>
+    </preConditions>
+    <changeSet  author="EvgeniiChuchkalov"  id="3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="customer_role"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="customer_role">
+            <column  name="customer_id"  type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column  name="role_id"  type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="customer_role"
+                baseColumnNames="customer_id"
+                constraintName="fk_customer_roles_customer"
+                referencedTableName="customer"
+                referencedColumnNames="id"/>
+        <addForeignKeyConstraint
+                baseTableName="customer_role"
+                baseColumnNames="role_id"
+                constraintName="fk_customer_roles_role"
+                referencedTableName="role"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
