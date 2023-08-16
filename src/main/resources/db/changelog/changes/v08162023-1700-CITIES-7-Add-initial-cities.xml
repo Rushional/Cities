@@ -1,0 +1,82 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <preConditions>
+        <or>
+            <dbms type="postgresql"/>
+            <dbms type="h2"/>
+        </or>
+    </preConditions>
+    <changeSet  author="EvgeniiChuchkalov"  id="7">
+        <insert tableName="city">
+            <column name="name" value="Tbilisi"></column>
+            <column name="country_id" value="1"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Batumi"></column>
+            <column name="country_id" value="1"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Kutaisi"></column>
+            <column name="country_id" value="1"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Rustavi"></column>
+            <column name="country_id" value="1"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Shanghai"></column>
+            <column name="country_id" value="2"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Beijing"></column>
+            <column name="country_id" value="2"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Guangzhou"></column>
+            <column name="country_id" value="2"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Mumbai"></column>
+            <column name="country_id" value="3"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Delhi"></column>
+            <column name="country_id" value="3"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Bangalore"></column>
+            <column name="country_id" value="3"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="New York"></column>
+            <column name="country_id" value="4"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Los Angeles"></column>
+            <column name="country_id" value="4"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Chicago"></column>
+            <column name="country_id" value="4"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="St. Petersburg"></column>
+            <column name="country_id" value="4"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Moscow"></column>
+            <column name="country_id" value="5"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="St. Petersburg"></column>
+            <column name="country_id" value="5"></column>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="Kaliningrad"></column>
+            <column name="country_id" value="5"></column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

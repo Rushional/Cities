@@ -1,0 +1,29 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <preConditions>
+        <or>
+            <dbms type="postgresql"/>
+            <dbms type="h2"/>
+        </or>
+    </preConditions>
+    <changeSet  author="EvgeniiChuchkalov"  id="6">
+        <insert tableName="country">
+            <column name="name" value="Georgia"></column>
+        </insert>
+        <insert tableName="country">
+            <column name="name" value="China"></column>
+        </insert>
+        <insert tableName="country">
+            <column name="name" value="India"></column>
+        </insert>
+        <insert tableName="country">
+            <column name="name" value="United States of America"></column>
+        </insert>
+        <insert tableName="country">
+            <column name="name" value="Russia"></column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
