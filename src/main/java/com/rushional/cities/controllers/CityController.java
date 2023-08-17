@@ -21,6 +21,8 @@ public class CityController {
 
     @Value("${constants.flags-bucket}")
     private String CITIES_BUCKET;
+    @Value("${constants.flags-path-in-bucket}")
+    private String FLAGS_PATH_IN_BUCKET;
 
     @GetMapping()
     public List<CityDto> getUniqueCountries() {
@@ -32,7 +34,7 @@ public class CityController {
         File tempFile = File.createTempFile("spain-", null);
         tempFile.deleteOnExit();
         inputFile.transferTo(tempFile);
-        pictureUploadService.uploadPicture("cabbage.jpg", tempFile, CITIES_BUCKET);
+        pictureUploadService.uploadPicture(FLAGS_PATH_IN_BUCKET + "cabbage.jpg", tempFile, CITIES_BUCKET);
         tempFile.delete();
     }
 }
