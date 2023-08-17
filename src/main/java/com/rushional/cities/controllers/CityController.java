@@ -1,40 +1,51 @@
 package com.rushional.cities.controllers;
 
-import com.rushional.cities.dtos.CityDto;
+import com.rushional.cities.dtos.CitiesResponse;
+import com.rushional.cities.exceptions.NotFoundException;
+import com.rushional.cities.models.CityEntity;
+import com.rushional.cities.repositories.CityRepository;
 import com.rushional.cities.services.CityService;
-import com.rushional.cities.services.PictureUploadService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cities")
 @RequiredArgsConstructor
 public class CityController {
+    private final CityRepository cityRepository;
     private final CityService cityService;
-    private final PictureUploadService pictureUploadService;
-
-    @Value("${constants.flags-bucket}")
-    private String CITIES_BUCKET;
-    @Value("${constants.flags-path-in-bucket}")
-    private String FLAGS_PATH_IN_BUCKET;
 
     @GetMapping()
-    public List<CityDto> getUniqueCountries() {
-        return cityService.getAllCities();
+    public List<CitiesResponse> getCities(
+            @RequestParam("perPage") int perPage,
+            @RequestParam("page") Optional<Integer> pageOptional,
+            @RequestParam("cityName") Optional<String> cityNameOptional,
+            @RequestParam("countryName") Optional<String> countryNameOptional,
+            UriComponentsBuilder uriBuilder,
+            HttpServletResponse response
+    ) {
+        return cityService.getCitiesDtos(cityNameOptional, countryNameOptional);
     }
 
-    @PostMapping("/upload-file")
-    public void handleFileUpload(@RequestParam("inputFile") MultipartFile inputFile) throws IOException {
-        File tempFile = File.createTempFile("spain-", null);
-        tempFile.deleteOnExit();
-        inputFile.transferTo(tempFile);
-        pictureUploadService.uploadPicture(FLAGS_PATH_IN_BUCKET + "cabbage.jpg", tempFile, CITIES_BUCKET);
-        tempFile.delete();
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> editCity(@PathVariable Long id, @RequestParam("name") String name) {
+        CityEntity city = getCity(id);
+        city.setName(name);
+        cityRepository.save(city);
+        return ResponseEntity.ok().build();
+    }
+
+    private CityEntity getCity(Long id) {
+        Optional<CityEntity> cityOptional = cityRepository.findById(id);
+        if (cityOptional.isEmpty()) throw new NotFoundException("City not found");
+        return cityOptional.get();
     }
 }

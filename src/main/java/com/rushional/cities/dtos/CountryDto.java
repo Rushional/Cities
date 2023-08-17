@@ -15,6 +15,7 @@ public class CountryDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 3026313130574697297L;
 
+    Long id;
     String name;
     String flagPath;
 }

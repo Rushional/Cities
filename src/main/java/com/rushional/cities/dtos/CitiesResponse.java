@@ -10,11 +10,12 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CityDto implements Serializable {
+public class CitiesResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3026313130574697297L;
 
+    Long id;
     String cityName;
     String countryName;
     String flagPath;
