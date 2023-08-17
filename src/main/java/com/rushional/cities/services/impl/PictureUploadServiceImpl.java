@@ -1,10 +1,16 @@
 package com.rushional.cities.services.impl;
 
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.policy.Policy;
+import com.amazonaws.auth.policy.Principal;
+import com.amazonaws.auth.policy.Resource;
+import com.amazonaws.auth.policy.Statement;
+import com.amazonaws.auth.policy.actions.S3Actions;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.AwsHostNameUtils;
 import com.rushional.cities.services.PictureUploadService;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +55,16 @@ public class PictureUploadServiceImpl implements PictureUploadService {
             return;
         }
         client.createBucket(bucketName);
+        setPublicReadOnly(client, bucketName);
+    }
+
+    private void setPublicReadOnly(AmazonS3 client, String bucketName) {
+        Policy bucketPolicy = new Policy().withStatements(
+                new Statement(Statement.Effect.Allow)
+                        .withPrincipals(Principal.AllUsers)
+                        .withActions(S3Actions.GetObject)
+                        .withResources(new Resource(
+                                "arn:aws:s3:::" + bucketName + "/*")));
+        client.setBucketPolicy(new SetBucketPolicyRequest(bucketName, bucketPolicy.toJson()));
     }
 }
