@@ -4,6 +4,7 @@ import com.rushional.cities.dtos.CityDto;
 import com.rushional.cities.services.CityService;
 import com.rushional.cities.services.PictureUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,9 @@ public class CityController {
     private final CityService cityService;
     private final PictureUploadService pictureUploadService;
 
+    @Value("${constants.flags-bucket}")
+    private String CITIES_BUCKET;
+
     @GetMapping()
     public List<CityDto> getUniqueCountries() {
         return cityService.getAllCities();
@@ -28,7 +32,7 @@ public class CityController {
         File tempFile = File.createTempFile("spain-", null);
         tempFile.deleteOnExit();
         inputFile.transferTo(tempFile);
-        pictureUploadService.uploadPicture("cabbage.jpg", tempFile);
+        pictureUploadService.uploadPicture("cabbage.jpg", tempFile, CITIES_BUCKET);
         tempFile.delete();
     }
 }
