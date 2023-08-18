@@ -8,6 +8,7 @@ import com.rushional.cities.services.CountryService;
 import com.rushional.cities.services.PictureUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,10 +32,10 @@ public class CountryController {
     private String FLAGS_PATH_IN_BUCKET;
 
     @GetMapping()
-    public List<CountryDto> getAllCountries(
-            @RequestParam("per_page") int perPage,
-            @RequestParam("page") int page) {
-        return countryService.getAll();
+    public ResponseEntity<?> getAllCountries(
+            @RequestParam(value = "per_page", defaultValue = "25") int perPage,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
+        return new ResponseEntity<>(countryService.getAll(perPage, page), HttpStatus.OK);
     }
 
     @PostMapping("{id}/upload-flag")

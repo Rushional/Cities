@@ -6,6 +6,7 @@ import com.rushional.cities.models.CityEntity;
 import com.rushional.cities.repositories.CityRepository;
 import com.rushional.cities.services.CityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
+
+    @Value("${constants.image-host}")
+    private String IMAGE_HOST;
+    @Value("${constants.flags-bucket}")
+    private String FLAGS_BUCKET;
 
     public CitiesResponse getCities(
             int perPage,
@@ -64,6 +70,12 @@ public class CityServiceImpl implements CityService {
                 city.getId(),
                 city.getName(),
                 city.getCountry().getName(),
-                city.getCountry().getFlagPath());
+                getFlagUrl(city.getCountry().getFlagPath()));
+    }
+
+    private String getFlagUrl(String flagPath) {
+        if (Objects.isNull(flagPath))
+            return null;
+        return IMAGE_HOST + "/" + FLAGS_BUCKET + "/" + flagPath;
     }
 }

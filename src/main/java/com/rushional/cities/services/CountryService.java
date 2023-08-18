@@ -1,9 +1,9 @@
 package com.rushional.cities.services;
 
-import com.rushional.cities.dtos.CountryDto;
+import com.rushional.cities.dtos.CountriesResponse;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CountryService {
-    List<CountryDto> getAll();
+    CountriesResponse getAll(int perPage, int page);
 }
