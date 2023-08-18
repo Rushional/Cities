@@ -53,7 +53,7 @@ public class CountryServiceImpl implements CountryService {
             tempFile.deleteOnExit();
             flagImage.transferTo(tempFile);
         } catch (IOException e) {
-            throw new InternalServerException();
+            throw new InternalServerException("File creation failure");
         }
         String extension = FilenameUtils.getExtension(flagImage.getOriginalFilename());
         String flagPath = FLAGS_PATH_IN_BUCKET +

@@ -1,6 +1,8 @@
 package com.rushional.cities.controllers;
 
 import com.rushional.cities.services.CityService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,10 @@ public class CityController {
 
     @GetMapping()
     public ResponseEntity<?> getCities(
-            @RequestParam(value = "per_page", defaultValue = "25") int perPage,
+            @RequestParam(value = "per_page", defaultValue = "25") @NotBlank int perPage,
             @RequestParam(value = "page", defaultValue = "0") Optional<Integer> pageOptional,
-            @RequestParam("city_name") Optional<String> cityNameOptional,
-            @RequestParam("country_name") Optional<String> countryNameOptional
+            @RequestParam("city_name") @Size(max = 100) Optional<String> cityNameOptional,
+            @RequestParam("country_name") @Size(max = 100) Optional<String> countryNameOptional
     ) {
         return new ResponseEntity<>(
                 cityService.getCities(perPage, pageOptional, cityNameOptional, countryNameOptional),
