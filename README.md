@@ -63,11 +63,10 @@
    For maintainability and extendability, I decided that this app would require endpoints for adding and removing countries and cities, and also renaming cities.
    I did not implement these endpoints, because it's outside of the scale of the task requirements.
 
-   I've added some cities, countries and users, but it is not my intention that this is the actual mechanism for the data to be added to the app.
+   The images of flags for each country are also uploaded to the S3 un application startup. Also, there are migrations to add some cities, countries and users data.
+   But, again, it is not my intention that this is the actual mechanism for the data to be added to the app. The added data is only for testing the application and checking the task completion.
 
-   The added data is only for testing the application and checking the task completion.
-
-4) Why all cities, search by country or city name are all made in a single endpoint
+5) Why all cities, search by country or city name are all made in a single endpoint
   * This endpoint structure makes sense, and is easy to understand
   * Also, this realization allows much more flexibility with the endpoint.
 
