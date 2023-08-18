@@ -11,13 +11,8 @@ import java.util.List;
 @Table(name = "role")
 @Entity(name = "role")
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class RoleEntity extends AbstractAuditEntity {
-
-    @Serial
-    private static final long serialVersionUID = -4350213178619263160L;
-
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

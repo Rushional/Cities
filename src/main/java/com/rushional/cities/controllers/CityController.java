@@ -25,8 +25,6 @@ public class CityController {
                 HttpStatus.OK);
     }
 
-
-
     @PatchMapping("/{id}")
     public ResponseEntity<?> editCity(@PathVariable Long id, @RequestParam("name") String name) {
         return new ResponseEntity(cityService.editCity(id, name), HttpStatus.OK);
