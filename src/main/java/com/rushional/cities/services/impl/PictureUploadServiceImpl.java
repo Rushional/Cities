@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.AwsHostNameUtils;
+import com.rushional.cities.exceptions.InternalServerException;
 import com.rushional.cities.services.PictureUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,7 @@ public class PictureUploadServiceImpl implements PictureUploadService {
         try {
             client.putObject(bucketName, picturePath, file);
         } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
+            throw new InternalServerException("Image upload failed");
         }
     }
 
