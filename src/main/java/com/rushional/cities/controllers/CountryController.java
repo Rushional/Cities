@@ -21,11 +21,11 @@ public class CountryController {
         return new ResponseEntity<>(countryService.getAll(perPage, page), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/upload-flag")
+    @PostMapping("{countryId}/upload-flag")
     public ResponseEntity<?> uploadFlag(
-            @PathVariable Long id,
+            @PathVariable Long countryId,
             @RequestParam("flag_image") MultipartFile flagImage
     ) {
-        return new ResponseEntity<>(countryService.uploadFlag(id, flagImage), HttpStatus.OK);
+        return new ResponseEntity<>(countryService.uploadFlag(countryId, flagImage), HttpStatus.OK);
     }
 }

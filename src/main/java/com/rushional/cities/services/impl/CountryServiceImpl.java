@@ -7,7 +7,7 @@ import com.rushional.cities.exceptions.NotFoundException;
 import com.rushional.cities.models.CountryEntity;
 import com.rushional.cities.repositories.CountryRepository;
 import com.rushional.cities.services.CountryService;
-import com.rushional.cities.services.PictureUploadService;
+import com.rushional.cities.services.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
     private final CountryRepository countryRepository;
-    private final PictureUploadService pictureUploadService;
+    private final FileUploadService fileUploadService;
 
     @Value("${constants.flags-bucket}")
     private String CITIES_BUCKET;
@@ -45,25 +45,28 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDto uploadFlag(Long id, MultipartFile flagImage) {
-        CountryEntity country = getCountry(id);
-        File tempFile;
-        try {
-            tempFile = File.createTempFile(country.getName() + "uuid here", null);
-            tempFile.deleteOnExit();
-            flagImage.transferTo(tempFile);
-        } catch (IOException e) {
-            throw new InternalServerException("File creation failure");
-        }
-        String extension = FilenameUtils.getExtension(flagImage.getOriginalFilename());
-        String flagPath = FLAGS_PATH_IN_BUCKET +
-                country.getName() + "-" + country.getUuid() + "." + extension;
-        System.out.println(flagPath);
-        pictureUploadService.uploadPicture(flagPath, tempFile, CITIES_BUCKET);
-        tempFile.delete();
-        country.setFlagPath(flagPath);
+    public CountryDto uploadFlag(Long countryId, MultipartFile flagImage) {
+        CountryEntity country = getCountryById(countryId);
+        String fullFilePath = fileUploadService.uploadMultipartFile(
+                FLAGS_PATH_IN_BUCKET,
+                getFileNameWithoutExtension(country),
+                flagImage,
+                CITIES_BUCKET
+        );
+        country.setFlagPath(fullFilePath);
         countryRepository.save(country);
         return new CountryDto(country.getId(), country.getName(), country.getFlagPath());
+    }
+
+    @Override
+    public CountryEntity getCountryById(Long id) {
+        Optional<CountryEntity> countryOptional = countryRepository.findById(id);
+        if (countryOptional.isEmpty()) throw new NotFoundException("Country not found");
+        return countryOptional.get();
+    }
+
+    public String getFileNameWithoutExtension(CountryEntity country) {
+        return country.getName() + "-" + country.getUuid() + ".";
     }
 
     private CountryDto countryEntityToDto(CountryEntity country) {
@@ -71,11 +74,5 @@ public class CountryServiceImpl implements CountryService {
                 country.getId(),
                 country.getName(),
                 country.getFlagPath());
-    }
-
-    private CountryEntity getCountry(Long id) {
-        Optional<CountryEntity> countryOptional = countryRepository.findById(id);
-        if (countryOptional.isEmpty()) throw new NotFoundException("Country not found");
-        return countryOptional.get();
     }
 }

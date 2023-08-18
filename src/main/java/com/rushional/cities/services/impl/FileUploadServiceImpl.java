@@ -13,27 +13,68 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.AwsHostNameUtils;
 import com.rushional.cities.exceptions.InternalServerException;
-import com.rushional.cities.services.PictureUploadService;
+import com.rushional.cities.services.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Objects;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 @Service
 @RequiredArgsConstructor
-public class PictureUploadServiceImpl implements PictureUploadService {
+public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${constants.image-host}")
     private String IMAGE_HOST;
 
     @Override
-    public void uploadPicture(String picturePath, File file, String bucketName) {
+    public String uploadFile(String pathToFile, String fileNameWithoutExtension, File file, String bucketName) {
+        File tempFile;
+        try {
+            tempFile = File.createTempFile(fileNameWithoutExtension, null);
+            tempFile.deleteOnExit();
+            FileChannel src = new FileInputStream(file).getChannel();
+            FileChannel dest = new FileOutputStream(tempFile).getChannel();
+            dest.transferFrom(src, 0, src.size());
+        } catch (IOException e) {
+            throw new InternalServerException("File creation failure");
+        }
+        String extension = FilenameUtils.getExtension(file.getName());
+        String fullFilePath = pathToFile + fileNameWithoutExtension + extension;
+        upload(fullFilePath, tempFile, bucketName);
+        tempFile.delete();
+        return fullFilePath;
+    }
+
+    @Override
+    public String uploadMultipartFile(String pathToFile, String fileNameWithoutExtension,
+                                    MultipartFile multipartFile, String bucketName) {
+        File tempFile;
+        try {
+            tempFile = File.createTempFile(fileNameWithoutExtension, null);
+            tempFile.deleteOnExit();
+            multipartFile.transferTo(tempFile);
+        } catch (IOException e) {
+            throw new InternalServerException("File creation failure");
+        }
+        String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        String fullFilePath = pathToFile + fileNameWithoutExtension + extension;
+        upload(fullFilePath, tempFile, bucketName);
+        tempFile.delete();
+        return fullFilePath;
+    }
+
+    private void upload(String fullFilePath, File file, String bucketName) {
         AmazonS3 client = getS3Client();
         createS3Bucket(client, bucketName);
         try {
-            client.putObject(bucketName, picturePath, file);
+            client.putObject(bucketName, fullFilePath, file);
         } catch (AmazonServiceException e) {
             throw new InternalServerException("Image upload failed");
         }
@@ -69,4 +110,6 @@ public class PictureUploadServiceImpl implements PictureUploadService {
                                 "arn:aws:s3:::" + bucketName + "/*")));
         client.setBucketPolicy(new SetBucketPolicyRequest(bucketName, bucketPolicy.toJson()));
     }
+
+
 }
