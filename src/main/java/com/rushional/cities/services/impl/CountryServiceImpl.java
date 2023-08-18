@@ -17,7 +17,7 @@ public class CountryServiceImpl implements CountryService {
     private final CitiesMapper mapper;
 
     @Override
-    public List<CountryDto> uniqueCountries() {
+    public List<CountryDto> getAll() {
         return countryRepository.findAll()
                 .stream()
                 .map(mapper::toDto)

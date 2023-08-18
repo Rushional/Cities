@@ -2,7 +2,6 @@ package com.rushional.cities.controllers;
 
 import com.rushional.cities.dtos.CountryDto;
 import com.rushional.cities.exceptions.NotFoundException;
-import com.rushional.cities.models.CityEntity;
 import com.rushional.cities.models.CountryEntity;
 import com.rushional.cities.repositories.CountryRepository;
 import com.rushional.cities.services.CountryService;
@@ -31,9 +30,11 @@ public class CountryController {
     @Value("${constants.flags-path-in-bucket}")
     private String FLAGS_PATH_IN_BUCKET;
 
-    @GetMapping("/unique")
-    public List<CountryDto> getUniqueCountries() {
-        return countryService.uniqueCountries();
+    @GetMapping()
+    public List<CountryDto> getAllCountries(
+            @RequestParam("per_page") int perPage,
+            @RequestParam("page") int page) {
+        return countryService.getAll();
     }
 
     @PostMapping("{id}/upload-flag")
