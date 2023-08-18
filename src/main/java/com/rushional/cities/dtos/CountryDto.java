@@ -1,6 +1,7 @@
 package com.rushional.cities.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class CountryDto implements Serializable {
 
     Long id;
     String name;
+    @JsonProperty("flag_path")
     String flagPath;
 }
