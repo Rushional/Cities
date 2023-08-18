@@ -7,6 +7,7 @@
    * IMAGE_HOST= S3 host address. If running S3 locally, use "http://127.0.0.1:9000" (without quotaion marks);
    * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY - S3 access keys, they're needed to be created;
    * AUTHENTICATION_SECRET_KEY=qcG4erZzPglTze3E3GYBIqI9/V6arYaJI6oHWsS4SE0r+hVs7ZXKoBE+69Ojp0/N
+   * Set profile as dev or test. This can be done in intellij, with Active profiles options, or as an environment variable: spring.profiles.active=test
   
 # Endpoints:
 1) Get paginated cities with flags of their countries:
