@@ -2,13 +2,16 @@ package com.rushional.cities.services.impl;
 
 import com.rushional.cities.dtos.CitiesResponse;
 import com.rushional.cities.dtos.CityDto;
+import com.rushional.cities.exceptions.NotFoundException;
 import com.rushional.cities.models.CityEntity;
+import com.rushional.cities.models.CountryEntity;
 import com.rushional.cities.repositories.CityRepository;
 import com.rushional.cities.services.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
@@ -65,6 +68,16 @@ public class CityServiceImpl implements CityService {
         );
     }
 
+    @Override
+    public CityDto editCity(Long id, String name) {
+        CityEntity city = getCity(id);
+        city.setName(name);
+        cityRepository.save(city);
+        CountryEntity country = city.getCountry();
+        return new CityDto(city.getId(), city.getName(),
+                country.getName(), country.getFlagPath());
+    }
+
     private CityDto cityEntityToDto(CityEntity city) {
         return new CityDto(
                 city.getId(),
@@ -77,5 +90,11 @@ public class CityServiceImpl implements CityService {
         if (Objects.isNull(flagPath))
             return null;
         return IMAGE_HOST + "/" + FLAGS_BUCKET + "/" + flagPath;
+    }
+
+    private CityEntity getCity(Long id) {
+        Optional<CityEntity> cityOptional = cityRepository.findById(id);
+        if (cityOptional.isEmpty()) throw new NotFoundException("City not found");
+        return cityOptional.get();
     }
 }

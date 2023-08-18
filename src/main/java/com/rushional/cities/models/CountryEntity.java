@@ -21,6 +21,9 @@ public class CountryEntity extends AbstractAuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
+
     @Column(name = "name", nullable = false)
     private String name;
 

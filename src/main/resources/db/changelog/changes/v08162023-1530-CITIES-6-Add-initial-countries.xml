@@ -11,18 +11,23 @@
     </preConditions>
     <changeSet  author="EvgeniiChuchkalov"  id="6">
         <insert tableName="country">
+            <column name="uuid" value="d0f71256-93df-4b8d-bd49-b09409daa8c8"></column>
             <column name="name" value="Georgia"></column>
         </insert>
         <insert tableName="country">
+            <column name="uuid" value="e9f9a082-ee34-4bd7-8898-fd85347a4bbc"></column>
             <column name="name" value="China"></column>
         </insert>
         <insert tableName="country">
+            <column name="uuid" value="8d08083a-103c-4ea4-89f2-5a3b2d508348"></column>
             <column name="name" value="India"></column>
         </insert>
         <insert tableName="country">
+            <column name="uuid" value="b6a92d68-6f0d-40b0-aeb3-c1786c46e0a5"></column>
             <column name="name" value="United States of America"></column>
         </insert>
         <insert tableName="country">
+            <column name="uuid" value="4d79294e-3aea-4b52-b888-57314885916f"></column>
             <column name="name" value="Russia"></column>
         </insert>
     </changeSet>

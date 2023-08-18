@@ -1,6 +1,5 @@
 package com.rushional.cities.controllers;
 
-import com.rushional.cities.dtos.CountryDto;
 import com.rushional.cities.exceptions.NotFoundException;
 import com.rushional.cities.models.CountryEntity;
 import com.rushional.cities.repositories.CountryRepository;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,13 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CountryController {
     private final CountryService countryService;
-    private final CountryRepository countryRepository;
-    private final PictureUploadService pictureUploadService;
-
-    @Value("${constants.flags-bucket}")
-    private String CITIES_BUCKET;
-    @Value("${constants.flags-path-in-bucket}")
-    private String FLAGS_PATH_IN_BUCKET;
 
     @GetMapping()
     public ResponseEntity<?> getAllCountries(
@@ -39,25 +30,10 @@ public class CountryController {
     }
 
     @PostMapping("{id}/upload-flag")
-    public ResponseEntity<?> handleFileUpload(
+    public ResponseEntity<?> uploadFlag(
             @PathVariable Long id,
-            @RequestParam("flagImage") MultipartFile flagImage
-    ) throws IOException {
-        CountryEntity country = getCountry(id);
-        File tempFile = File.createTempFile(country.getName() + "uuid here", null);
-        tempFile.deleteOnExit();
-        flagImage.transferTo(tempFile);
-        String flagPath = FLAGS_PATH_IN_BUCKET + "cabbage.jpg";
-        pictureUploadService.uploadPicture(flagPath, tempFile, CITIES_BUCKET);
-        tempFile.delete();
-        country.setFlagPath(flagPath);
-        countryRepository.save(country);
-        return ResponseEntity.ok().build();
-    }
-
-    private CountryEntity getCountry(Long id) {
-        Optional<CountryEntity> countryOptional = countryRepository.findById(id);
-        if (countryOptional.isEmpty()) throw new NotFoundException("Country not found");
-        return countryOptional.get();
+            @RequestParam("flag_image") MultipartFile flagImage
+    ) {
+        return new ResponseEntity<>(countryService.uploadFlag(id, flagImage), HttpStatus.OK);
     }
 }
