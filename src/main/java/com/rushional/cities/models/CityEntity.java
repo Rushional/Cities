@@ -26,7 +26,7 @@ public class CityEntity extends AbstractAuditEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CountryEntity country;
