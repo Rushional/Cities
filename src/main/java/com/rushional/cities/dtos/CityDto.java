@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -13,14 +12,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CityDto implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 3026313130574697297L;
-
-    Long id;
+    private Long id;
     @JsonProperty("city_name")
-    String cityName;
+    private String cityName;
     @JsonProperty("country_name")
-    String countryName;
+    private String countryName;
     @JsonProperty("flag_path")
-    String flagPath;
+    private String flagPath;
 }

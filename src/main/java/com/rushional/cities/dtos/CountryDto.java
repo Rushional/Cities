@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -13,11 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CountryDto implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 3026313130574697297L;
-
-    Long id;
-    String name;
+    private  Long id;
+    private String name;
     @JsonProperty("flag_path")
-    String flagPath;
+    private String flagPath;
 }
