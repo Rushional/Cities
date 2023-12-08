@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.rushional.cities.utils.Constants.*;
+
 @Service
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
@@ -44,26 +46,23 @@ public class CityServiceImpl implements CityService {
         Pageable paging;
         int page;
         Sort sortByCountryName = Sort.by("country.name", "name");
-        if (perPage == -1) {
-            page = 0;
-            paging = PageRequest.of(page, Integer.MAX_VALUE, sortByCountryName);
-        }
-        else {
-            page = pageOptional.orElse(0);
+        Page<City> pageCities;
+        if (perPage == PER_PAGE_NOT_PAGINATED) {
+            page = DEFAULT_PAGE_NUMBER;
+            paging = PageRequest.of(page, PAGE_SIZE_NOT_PAGINATED, sortByCountryName);
+        } else {
+            page = pageOptional.orElse(DEFAULT_PAGE_NUMBER);
             paging = PageRequest.of(page, perPage, sortByCountryName);
         }
-        Page<City> pageCities;
 
         if (cityNameOptional.isPresent()) {
             String cityName = cityNameOptional.get();
             if (countryNameOptional.isPresent()) {
                 pageCities = cityRepository.findByCityNameAndCountryName(cityName, countryNameOptional.get(), paging);
-            }
-            else {
+            } else {
                 pageCities = cityRepository.findByName(cityName, paging);
             }
-        }
-        else {
+        } else {
             if (countryNameOptional.isPresent()) {
                 pageCities = cityRepository.findByCountryName(countryNameOptional.get(), paging);
             } else {
