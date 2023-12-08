@@ -24,13 +24,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   @Override
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    String email = request.getUsername().toLowerCase();
+    String username = request.getUsername().toLowerCase();
     authManager.authenticate(
-        new UsernamePasswordAuthenticationToken(email, request.getPassword()));
+        new UsernamePasswordAuthenticationToken(username, request.getPassword()));
 
     Customer customer =
-        customerRepository.findByUsername(email).orElseThrow(
-            () -> new UsernameNotFoundException("User with email '" + email + "' not found"));
+        customerRepository.findByUsername(username).orElseThrow(
+            () -> new UsernameNotFoundException("User with username '" + username + "' not found"));
 
     return getAuthenticationResponse(customer);
   }
@@ -38,11 +38,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
     String refreshJwt = request.getRefreshToken();
-    String email = jwtService.extractUsername(refreshJwt);
+    String username = jwtService.extractUsername(refreshJwt);
 
     Customer customer =
-        customerRepository.findByUsername(email).orElseThrow(
-            () -> new UsernameNotFoundException("User with email '" + email + "' not found"));
+        customerRepository.findByUsername(username).orElseThrow(
+            () -> new UsernameNotFoundException("User with username '" + username + "' not found"));
 
     return getAuthenticationResponse(customer);
   }

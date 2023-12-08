@@ -26,7 +26,7 @@ public class CustomerDetailsService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Optional<Customer> customerOptional = customerRepository.findByUsername(username);
     UserDetails userDetails = new CustomerDetails(customerOptional.orElseThrow(
-            () -> new UsernameNotFoundException("User with email " + username + " not found")
+            () -> new UsernameNotFoundException("User with username " + username + " not found")
     ));
 
     log.info("In CustomerDetailsService: customer with username {} successfully loaded", username);

@@ -45,11 +45,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     try {
       String jwt = authHeader.substring(TOKEN_EXTRACT_OFFSET);
-      String customerEmail = jwtService.extractUsername(jwt);
+      String username = jwtService.extractUsername(jwt);
 
-      if (customerEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+      if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
         UserDetails userDetails =
-            userDetailsService.loadUserByUsername(customerEmail.toLowerCase());
+            userDetailsService.loadUserByUsername(username.toLowerCase());
         if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
           UsernamePasswordAuthenticationToken authToken =
               new UsernamePasswordAuthenticationToken(userDetails, null,
