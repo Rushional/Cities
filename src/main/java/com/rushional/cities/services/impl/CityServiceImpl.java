@@ -3,6 +3,7 @@ package com.rushional.cities.services.impl;
 import com.rushional.cities.dtos.CitiesResponse;
 import com.rushional.cities.dtos.CityDto;
 import com.rushional.cities.dtos.UniqueCityNamesResponse;
+import com.rushional.cities.exceptions.BadRequestException;
 import com.rushional.cities.exceptions.NotFoundException;
 import com.rushional.cities.models.City;
 import com.rushional.cities.models.Country;
@@ -43,6 +44,8 @@ public class CityServiceImpl implements CityService {
             Optional<String> cityNameOptional,
             Optional<String> countryNameOptional
     ) {
+        validateCities(pageOptional, cityNameOptional, countryNameOptional);
+
         Pageable paging;
         int page;
         Sort sortByCountryName = Sort.by("country.name", "name");
@@ -108,6 +111,22 @@ public class CityServiceImpl implements CityService {
     @Override
     public String getFileNameWithoutExtension(City city) {
         return city.getName() + "-" + city.getUuid() + ".";
+    }
+
+    private void validateCities(
+            Optional<Integer> pageOptional,
+            Optional<String> cityNameOptional,
+            Optional<String> countryNameOptional
+    ) {
+        if (pageOptional.isPresent() && pageOptional.get() < 0) {
+            throw new BadRequestException(PAGE_NUMBER_VALIDATION_ERROR_MESSAGE);
+        }
+        if (cityNameOptional.isPresent() && cityNameOptional.get().length() > MAX_CITY_NAME_SIZE) {
+            throw new BadRequestException(CITY_NAME_VALIDATION_ERROR_MESSAGE);
+        }
+        if (countryNameOptional.isPresent() && countryNameOptional.get().length() > MAX_COUNTRY_NAME_SIZE) {
+            throw new BadRequestException(COUNTRY_NAME_VALIDATION_ERROR_MESSAGE);
+        }
     }
 
     private CityDto cityEntityToDto(City city) {
