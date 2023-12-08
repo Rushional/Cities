@@ -1,11 +1,11 @@
 # Running the project
-1) Amazon's AWS S3 is needed to store images and start the project.
-
-   A native installation of MinIO can be used for that: https://min.io/docs/minio/windows/index.html
-
-2) Set these environment variables:
+1) Amazon's AWS S3 is used to store images in this project. Locally, this is done in Docker, using MinIO - an AWS compatible, free-to-use storage. 
+   So, before starting the project itself, the docker-compose for the MinIO container should be run first, found in main project directory.
+2) Then, when MinIO is successfully started, open 127.0.0.1:9090 to access the MinIO UI. Then go to Access Keys, and create a new access key.
+   Save the generated public and secret keys, they'll be needed for the next step, and the private key won't be shown again after it's generated.
+3) Set these environment variables:
    * IMAGE_HOST= S3 host address. If running S3 locally, use "http://127.0.0.1:9000" (without quotaion marks);
-   * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY - S3 access keys, they're needed to be created;
+   * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY - S3 access keys that were generated and saved on the previous step;
    * AUTHENTICATION_SECRET_KEY=qcG4erZzPglTze3E3GYBIqI9/V6arYaJI6oHWsS4SE0r+hVs7ZXKoBE+69Ojp0/N
    * Set profile as dev or test. This can be done in intellij, with Active profiles options, or as an environment variable: spring.profiles.active=test
   
