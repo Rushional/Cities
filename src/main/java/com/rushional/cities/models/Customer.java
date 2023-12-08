@@ -24,7 +24,7 @@ public class Customer extends AbstractAuditEntity {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_role",
             joinColumns = @JoinColumn(
