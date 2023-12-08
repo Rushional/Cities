@@ -1,12 +1,13 @@
 package com.rushional.cities.controllers;
 
 import com.rushional.cities.dtos.CountriesResponse;
-import com.rushional.cities.dtos.CountryDto;
 import com.rushional.cities.services.CountryService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/countries")
@@ -19,13 +20,5 @@ public class CountryController {
             @RequestParam(value = "per_page", defaultValue = "25") @NotBlank int perPage,
             @RequestParam(value = "page", defaultValue = "0") int page) {
         return countryService.getAll(perPage, page);
-    }
-
-    @PostMapping("{countryId}/upload-flag")
-    public CountryDto uploadFlag(
-            @PathVariable Long countryId,
-            @RequestParam("flag_image") MultipartFile flagImage
-    ) {
-        return countryService.uploadFlag(countryId, flagImage);
     }
 }

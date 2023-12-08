@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.util.List;
 
 @Table(name = "customer")
@@ -13,10 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class CustomerEntity extends AbstractAuditEntity {
-
-    @Serial
-    private static final long serialVersionUID = -4350213178619263160L;
+public class Customer extends AbstractAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +31,5 @@ public class CustomerEntity extends AbstractAuditEntity {
                     name = "customer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private List<RoleEntity> roles;
+    private List<Role> roles;
 }

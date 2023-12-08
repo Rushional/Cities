@@ -3,7 +3,7 @@ package com.rushional.cities.services.impl;
 import com.rushional.cities.dtos.AuthenticationRequest;
 import com.rushional.cities.dtos.AuthenticationResponse;
 import com.rushional.cities.dtos.RefreshTokenRequest;
-import com.rushional.cities.models.CustomerEntity;
+import com.rushional.cities.models.Customer;
 import com.rushional.cities.repositories.CustomerRepository;
 import com.rushional.cities.security.CustomerDetails;
 import com.rushional.cities.security.JwtService;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     authManager.authenticate(
         new UsernamePasswordAuthenticationToken(email, request.getPassword()));
 
-    CustomerEntity customer =
+    Customer customer =
         customerRepository.findByUsername(email).orElseThrow(
             () -> new UsernameNotFoundException("User with email '" + email + "' not found"));
 
@@ -41,14 +40,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     String refreshJwt = request.getRefreshToken();
     String email = jwtService.extractUsername(refreshJwt);
 
-    CustomerEntity customer =
+    Customer customer =
         customerRepository.findByUsername(email).orElseThrow(
             () -> new UsernameNotFoundException("User with email '" + email + "' not found"));
 
     return getAuthenticationResponse(customer);
   }
 
-  private AuthenticationResponse getAuthenticationResponse(CustomerEntity customer) {
+  private AuthenticationResponse getAuthenticationResponse(Customer customer) {
     return new AuthenticationResponse(
             jwtService.generateAccessJwt(new CustomerDetails(customer)),
             jwtService.generateRefreshJwt(new CustomerDetails(customer))

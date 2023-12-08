@@ -1,6 +1,6 @@
 package com.rushional.cities.security;
 
-import com.rushional.cities.models.CustomerEntity;
+import com.rushional.cities.models.Customer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,27 +10,27 @@ import java.util.stream.Collectors;
 
 public class CustomerDetails implements UserDetails {
 
-  private final CustomerEntity customerEntity;
+  private final Customer customer;
 
-  public CustomerDetails(CustomerEntity customerEntity) {
-    this.customerEntity = customerEntity;
+  public CustomerDetails(Customer customer) {
+    this.customer = customer;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return customerEntity.getRoles().stream()
+    return customer.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
         .collect(Collectors.toList());
   }
 
   @Override
   public String getPassword() {
-    return customerEntity.getPassword();
+    return customer.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return customerEntity.getUsername();
+    return customer.getUsername();
   }
 
   @Override
@@ -53,7 +53,7 @@ public class CustomerDetails implements UserDetails {
     return true;
   }
 
-  public CustomerEntity getCustomerEntity() {
-    return customerEntity;
+  public Customer getCustomerEntity() {
+    return customer;
   }
 }

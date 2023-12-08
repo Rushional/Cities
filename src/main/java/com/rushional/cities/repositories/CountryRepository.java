@@ -1,8 +1,8 @@
 package com.rushional.cities.repositories;
 
-import com.rushional.cities.models.CountryEntity;
+import com.rushional.cities.models.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CountryRepository extends JpaRepository<CountryEntity, Long> { }
+public interface CountryRepository extends JpaRepository<Country, Long> { }

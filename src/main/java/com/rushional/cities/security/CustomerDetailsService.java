@@ -1,6 +1,6 @@
 package com.rushional.cities.security;
 
-import com.rushional.cities.models.CustomerEntity;
+import com.rushional.cities.models.Customer;
 import com.rushional.cities.repositories.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class CustomerDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<CustomerEntity> customerEntity = customerRepository.findByUsername(username);
+    Optional<Customer> customerEntity = customerRepository.findByUsername(username);
 
     if (customerEntity.isEmpty()) {
       throw new UsernameNotFoundException("User with email " + username + " not found");

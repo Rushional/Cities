@@ -7,17 +7,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.io.Serial;
-
 @Table(name = "city")
 @Entity(name = "city")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class CityEntity extends AbstractAuditEntity {
-
-    @Serial
-    private static final long serialVersionUID = -4350213178619263160L;
+public class City extends AbstractAuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +24,11 @@ public class CityEntity extends AbstractAuditEntity {
     @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private CountryEntity country;
+    private Country country;
+
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
+
+    @Column(name = "logo_path")
+    private String logoPath;
 }

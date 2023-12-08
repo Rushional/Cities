@@ -2,11 +2,13 @@ package com.rushional.cities.controllers;
 
 import com.rushional.cities.dtos.CitiesResponse;
 import com.rushional.cities.dtos.CityDto;
+import com.rushional.cities.dtos.UniqueCityNamesResponse;
 import com.rushional.cities.services.CityService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -26,8 +28,21 @@ public class CityController {
         return cityService.getCities(perPage, pageOptional, cityNameOptional, countryNameOptional);
     }
 
+    @GetMapping("/unique")
+    public UniqueCityNamesResponse getUniqueCityNames() {
+        return cityService.getUniqueCityNames();
+    }
+
     @PatchMapping("/{id}")
     public CityDto editCity(@PathVariable Long id, @RequestParam("name") String name) {
         return cityService.editCity(id, name);
+    }
+
+    @PostMapping("{id}/upload-logo")
+    public CityDto uploadLogo(
+            @PathVariable Long id,
+            @RequestParam("flag_image") MultipartFile flagImage
+    ) {
+        return cityService.uploadLogo(id, flagImage);
     }
 }
