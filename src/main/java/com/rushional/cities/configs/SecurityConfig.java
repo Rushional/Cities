@@ -26,7 +26,7 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeHttpRequests()
-        .requestMatchers("/countries/{id}/upload-flag")
+        .requestMatchers("/cities/{id}/upload-logo")
         .hasRole("EDITOR")
         .requestMatchers(HttpMethod.PATCH, "/cities/{id}")
         .hasRole("EDITOR")

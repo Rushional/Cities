@@ -4,6 +4,7 @@ import com.rushional.cities.dtos.CitiesResponse;
 import com.rushional.cities.dtos.CityDto;
 import com.rushional.cities.dtos.UniqueCityNamesResponse;
 import com.rushional.cities.services.CityService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,11 @@ public class CityController {
     private final CityService cityService;
 
     @GetMapping()
+    @Operation(
+            summary = "Get the list of cities",
+            description = "per_page can be -1 if pagination isn't needed, or the amount of elements per page. " +
+                    "page is the current page, and city_name and country_name are optional parameters " +
+                    "for searching by city/country name")
     public CitiesResponse getCities(
             @RequestParam(value = "per_page", defaultValue = "25")
             @Min(value = -1, message = PER_PAGE_VALIDATION_ERROR_MESSAGE)
@@ -34,16 +40,19 @@ public class CityController {
     }
 
     @GetMapping("/unique")
+    @Operation(summary = "List of unique city names")
     public UniqueCityNamesResponse getUniqueCityNames() {
         return cityService.getUniqueCityNames();
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Edit city name")
     public CityDto editCity(@PathVariable Long id, @RequestParam("name") String name) {
         return cityService.editCity(id, name);
     }
 
     @PostMapping("{id}/upload-logo")
+    @Operation(summary = "Upload a logo for a city")
     public CityDto uploadLogo(
             @PathVariable Long id,
             @RequestParam("flag_image") MultipartFile flagImage

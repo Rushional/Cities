@@ -4,6 +4,7 @@ import com.rushional.cities.dtos.AuthenticationRequest;
 import com.rushional.cities.dtos.AuthenticationResponse;
 import com.rushional.cities.dtos.RefreshTokenRequest;
 import com.rushional.cities.services.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class CustomerController {
     private final AuthenticationService authService;
 
     @PostMapping("/authenticate")
+    @Operation(summary = "Authentication")
     public AuthenticationResponse authenticate(
             @Valid @RequestBody AuthenticationRequest request) {
         log.info("Log in request: customer username: {}", request.getUsername());
@@ -28,6 +30,7 @@ public class CustomerController {
     }
 
     @PostMapping("/refresh-token")
+    @Operation(summary = "Refresh token")
     public AuthenticationResponse refreshToken(
             @RequestBody RefreshTokenRequest request) {
         log.info("Token refresh request in customer-service");
