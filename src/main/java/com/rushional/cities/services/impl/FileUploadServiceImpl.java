@@ -76,6 +76,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         try {
             client.putObject(bucketName, fullFilePath, file);
         } catch (AmazonServiceException e) {
+            e.printStackTrace();
             throw new InternalServerException("Image upload failed");
         }
     }
