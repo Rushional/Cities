@@ -24,15 +24,12 @@ public class CustomerDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<Customer> customerEntity = customerRepository.findByUsername(username);
+    Optional<Customer> customerOptional = customerRepository.findByUsername(username);
+    UserDetails userDetails = new CustomerDetails(customerOptional.orElseThrow(
+            () -> new UsernameNotFoundException("User with email " + username + " not found")
+    ));
 
-    if (customerEntity.isEmpty()) {
-      throw new UsernameNotFoundException("User with email " + username + " not found");
-    }
-
-    UserDetails userDetails = new CustomerDetails(customerEntity.get());
-
-    log.info("IN CustomerDetailsService customer with username {} successfully loaded", username);
+    log.info("In CustomerDetailsService: customer with username {} successfully loaded", username);
     return userDetails;
   }
 }

@@ -21,7 +21,7 @@ public class CityController {
     @GetMapping()
     public CitiesResponse getCities(
             @RequestParam(value = "per_page", defaultValue = "25") @NotBlank int perPage,
-            @RequestParam(value = "page", defaultValue = "0") Optional<Integer> pageOptional,
+            @RequestParam(value = "page") Optional<Integer> pageOptional,
             @RequestParam("city_name") @Size(max = 100) Optional<String> cityNameOptional,
             @RequestParam("country_name") @Size(max = 100) Optional<String> countryNameOptional
     ) {

@@ -13,12 +13,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class CityServiceImpl implements CityService {
             paging = PageRequest.of(page, Integer.MAX_VALUE, sortByCountryName);
         }
         else {
-            page = pageOptional.get();
+            page = pageOptional.orElse(0);
             paging = PageRequest.of(page, perPage, sortByCountryName);
         }
         Page<City> pageCities;
