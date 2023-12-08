@@ -51,16 +51,11 @@
 
 2) Filling the application with data.
 
-   In my opinion, it doesn't really make sense to fill the application with scripts. This would mean that every time a country needs to be changed, added or removed,
-   the application's code needs to be changed, a then the whole CI/CD and release process.
+   The images of flags for some of the cities are uploaded to the S3 on application startup. Also, there are migrations to add some cities, countries and users data.
 
-   For maintainability and extendability, I decided that this app would require endpoints for adding and removing countries and cities, and also renaming cities.
-   I did not implement these endpoints, because it's outside of the scale of the task requirements.
+   That said, this is meant as test data to quickly show that the application is indeed working. For maintainability and extendability, I decided that this app would require endpoints for adding and removing countries and cities. I did not implement these endpoints, because it's outside of the scale of the task requirements.
 
-   The images of flags for each country are also uploaded to the S3 un application startup. Also, there are migrations to add some cities, countries and users data.
-   But, again, it is not my intention that this is the actual mechanism for the data to be added to the app. The added data is only for testing the application and checking the task completion.
-
-3) Why all cities, search by country or city name are all made in a single endpoint
+3) Why endpoints to get all cities, search by country/city name are all made in a single endpoint
   * This endpoint structure makes sense, and is easy to understand
   * Also, this implementation allows much more flexibility with the endpoint.
 
